@@ -30,29 +30,80 @@ class Tiempo(var horas: Int, var minutos: Int, var segundos: Int) {
             return false
         }
 
-        val tiempoActual = obtenerSegundosClase(horas, minutos, segundos)
+        val tiempoActual = obtenerSegundos(horas, minutos, segundos)
 
         if (tiempoTotal + tiempoActual > MAX_SEGUNDOS) {
             println("No puedes sobrepasar las 23:59:59")
             return false
         }
 
-        actualizarSegundos(tiempoTotal + tiempoActual)
+        horas += t.horas
+        minutos += t.minutos
+        segundos += t.segundos
+
+        println(this)
         return true
+    }
+
+    fun decrementarTiempo(t: Tiempo): Boolean {
+
+        if ((horas - t.horas) < 0) {
+            println("No puedes restar menos horas de las que hay")
+            return false
+        }
+
+        val tiempoTotal = obtenerSegundos(t)
+        val tiempoActual = obtenerSegundos(horas, minutos, segundos)
+
+        if ((tiempoActual - tiempoActual) < 0) {
+            println("No puedes restar menos tiempo del que ya hay")
+            return false
+        }
+
+        horas -= t.horas
+        minutos -= t.minutos
+        segundos -= t.segundos
+
+        println(this)
+        return true
+    }
+
+    fun comparar(t: Tiempo): Boolean {
+
+    }
+
+    fun copiar(): Tiempo {
+
+    }
+
+    fun copiar(t: Tiempo): Tiempo {
+
+    }
+
+    fun sumarTiempo(t: Tiempo): Tiempo? {
+
+    }
+
+    fun restarTiempo(t: Tiempo): Tiempo? {
+
+    }
+
+    fun esMayorQue(t: Tiempo): Boolean {
+
+    }
+
+    fun esMenorQue(t: Tiempo): Boolean {
+
     }
 
     fun obtenerSegundos(t: Tiempo): Int {
         return (t.horas * 3600) + (t.minutos * 60) + t.segundos
     }
 
-    fun obtenerSegundosClase(h: Int, m: Int, s: Int): Int {
+    fun obtenerSegundos(h: Int, m: Int, s: Int): Int {
         return (h * 3600) + (m * 60) + s
     }
 
-    fun actualizarSegundos(tiempoTotal: Int) {
-
-        
-    }
 
     override fun toString(): String {
         return "${horas}h ${minutos}m ${segundos}s"
