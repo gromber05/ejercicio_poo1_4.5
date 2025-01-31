@@ -1,18 +1,14 @@
-class Tiempo(var horas: Int, var minutos: Int, var segundos: Int) {
-
-    constructor(horas: Int): this(horas, 0, 0)
-
-    constructor(horas: Int, minutos: Int): this(horas, minutos, 0)
+class Tiempo(var horas: Int, var minutos: Int = 0, var segundos: Int = 0) {
 
     companion object {
-        val MAX_HORA: Int = 23
-        val MAX_SEGUNDOS: Int = 86399
+        const val MAX_HORA = 23
+        const val MAX_SEGUNDOS = 86399
     }
 
     init {
-        require(horas < 24)
-        require(minutos < 60)
-        require(segundos < 60)
+        require(horas in 0..23) { "Las horas deben estar entre 0 y 23" }
+        require(minutos in 0..59) { "Los minutos deben estar entre 0 y 59" }
+        require(segundos in 0..59) { "Los segundos deben estar entre 0 y 59" }
     }
 
     fun incrementarTiempo(t: Tiempo): Boolean {
@@ -67,37 +63,17 @@ class Tiempo(var horas: Int, var minutos: Int, var segundos: Int) {
         return true
     }
 
-    fun comparar(t: Tiempo): Int {
+    fun comparar(t: Tiempo): Int = obtenerSegundos(this).compareTo(obtenerSegundos(t))
 
-        val tiempoTotal = obtenerSegundos(t)
-        val tiempoActual = obtenerSegundos(horas, minutos, segundos)
-        var resultado = -2
+    fun copiar(): Tiempo = Tiempo(horas, minutos, segundos)
 
-        if (tiempoActual == tiempoTotal) {
-            resultado = 0
-        }
-        else if (tiempoActual < tiempoTotal) {
-            resultado = -1
-        }
-        else if (tiempoActual > tiempoTotal) {
-            resultado = 1
-        }
-
-        return resultado
-    }
-
-    fun copiar(): Tiempo {
-        return Tiempo(this.horas, this.minutos, this.segundos)
-    }
-
-    fun copiar(t: Tiempo){
+    fun copiar(t: Tiempo) {
         this.horas = t.horas
         this.minutos = t.minutos
         this.segundos = t.segundos
     }
 
     fun sumarTiempo(t: Tiempo): Tiempo? {
-
         if (obtenerSegundos(t) + obtenerSegundos(this) > MAX_SEGUNDOS) {
             return null
         } else {
@@ -115,24 +91,19 @@ class Tiempo(var horas: Int, var minutos: Int, var segundos: Int) {
         }
     }
 
-    fun esMayorQue(t: Tiempo): Boolean {
-        if (obtenerSegundos(this) > obtenerSegundos(t)) return true else return false
-    }
+    fun esMayorQue(t: Tiempo): Boolean = obtenerSegundos(this) > obtenerSegundos(t)
 
-    fun esMenorQue(t: Tiempo): Boolean {
-        if (obtenerSegundos(this) < obtenerSegundos(t)) return true else return false
-    }
+    fun esMenorQue(t: Tiempo): Boolean = obtenerSegundos(this) < obtenerSegundos(t)
 
-    fun obtenerSegundos(t: Tiempo): Int {
+    private fun obtenerSegundos(t: Tiempo): Int {
         return (t.horas * 3600) + (t.minutos * 60) + t.segundos
     }
 
-    fun obtenerSegundos(h: Int, m: Int, s: Int): Int {
+    private fun obtenerSegundos(h: Int, m: Int, s: Int): Int {
         return (h * 3600) + (m * 60) + s
     }
 
-    override fun toString(): String {
-        return "${horas}h ${minutos}m ${segundos}s"
-    }
 
+
+    override fun toString(): String = "%02d:%02d:%02d".format(horas, minutos, segundos)
 }
