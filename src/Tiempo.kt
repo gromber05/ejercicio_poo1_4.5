@@ -131,7 +131,6 @@ class Tiempo(var horas: Int, var minutos: Int, var segundos: Int) {
         return (h * 3600) + (m * 60) + s
     }
 
-
     override fun toString(): String {
         return "${horas}h ${minutos}m ${segundos}s"
     }
